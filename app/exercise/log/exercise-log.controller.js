@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import { prisma } from '../../prisma.js'
-import { prevExercisesLogValue } from './prev-exercise-log.js'
+import { addPrevValues } from './prev-exercise-log.js'
 
 //  @route POST api/exercises/log
 export const getAllLogExercise = asyncHandler(async (req, res) => {
@@ -46,7 +46,7 @@ export const getLogExercise = asyncHandler(async (req, res) => {
 		}
 	})
 
-	const newValue = prevExercisesLogValue(logExercise, prevExercisesLog)
+	const newValue = addPrevValues(logExercise, prevExercisesLog)
 
 	res.json({ ...logExercise, times: newValue })
 })
@@ -93,21 +93,26 @@ export const createLogExercise = asyncHandler(async (req, res) => {
 })
 
 //@route PATH api/exercises/times/:id
-export const updateExerciseTime = asyncHandler(async (req, res) => {
-	const { repeat, weight, isCompleted } = req.body
-	const logExercise = await prisma.exerciseTime.update({
-		where: {
-			id: +req.params.id
-		},
-		data: {
-			repeat,
-			weight,
-			isCompleted
-		}
-	})
-	const newValue = prevExercisesLogValue(logExercise, prevExercisesLogValue)
+export const updateExerciseLogTime = asyncHandler(async (req, res) => {
+	const { weight, repeat, isCompleted } = req.body
 
-	res.json({ ...logExercise, times: newValue })
+	try {
+		const exerciseLogTime = await prisma.exerciseTime.update({
+			where: {
+				id: +req.params.id
+			},
+			data: {
+				weight,
+				repeat,
+				isCompleted
+			}
+		})
+
+		res.json(exerciseLogTime)
+	} catch (error) {
+		res.status(404)
+		throw new Error('Exercise log time not found!')
+	}
 })
 
 //  @route DELETE api/exercises/log/:id

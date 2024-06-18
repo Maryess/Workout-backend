@@ -17,12 +17,13 @@ export const authUser = asyncHandler(async (req, res) => {
 	})
 
 	const isValidPassword = await verify(user.password, password)
+
 	if (user && isValidPassword) {
 		const token = generateToken(user.id)
 		res.json({ user, token })
 	} else {
 		res.status(401)
-		throw new Error('Email or password are not correct')
+		throw new Error('Email and password are not correct')
 	}
 })
 
@@ -53,5 +54,5 @@ export const registerUser = asyncHandler(async (req, res) => {
 
 	const token = generateToken(user.id)
 
-	res.json({ user, token })
+	res.json(user, token)
 })

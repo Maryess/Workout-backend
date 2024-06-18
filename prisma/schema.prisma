@@ -61,10 +61,10 @@ model logExercise {
 }
 
 model logWorkout {
-  id         Int      @id @default(autoincrement())
-  isComleted Boolean  @default(false)
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedt   DateTime @default(now()) @map("updated_at")
+  id          Int      @id @default(autoincrement())
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedt    DateTime @default(now()) @map("updated_at")
 
   logExercises logExercise[]
 

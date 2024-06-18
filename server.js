@@ -1,4 +1,5 @@
 import 'colors'
+import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
 import morgan from 'morgan'
@@ -8,13 +9,16 @@ import {
 } from './app/auth/auth.routes.js'
 import exerciseRoutes from './app/exercise/exercise.routes.js'
 import exerciseLogRoutes from './app/exercise/log/exercise-log.routes.js'
+import { prisma } from './app/prisma.js'
 import userRoutes from './app/user/user.routes.js'
 import workoutLogRoutes from './app/workout/log/workout-log.routes.js'
 import workoutRoutes from './app/workout/workout.routes.js'
+
 const app = express()
 dotenv.config()
 async function main() {
 	if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
+	app.use(cors())
 
 	app.use(express.json())
 	app.use('/api/auth', authRoutes)
@@ -37,3 +41,11 @@ async function main() {
 	)
 }
 main()
+	.then(async () => {
+		await prisma.$disconnect()
+	})
+	.catch(async e => {
+		console.error(e)
+		await prisma.$disconnect()
+		process.exit(1)
+	})
