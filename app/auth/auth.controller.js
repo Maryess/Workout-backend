@@ -33,13 +33,13 @@ export const authUser = asyncHandler(async (req, res) => {
 export const registerUser = asyncHandler(async (req, res) => {
 	const { email, password } = req.body
 
-	const isHaveUser = await prisma.user.findUnique({
+	const isUserExist = await prisma.user.findUnique({
 		where: {
 			email
 		}
 	})
 
-	if (isHaveUser) {
+	if (isUserExist) {
 		res.status(400)
 		throw new Error('User already exists')
 	}
