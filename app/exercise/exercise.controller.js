@@ -27,6 +27,17 @@ export const getAllExercises = asyncHandler(async (req, res) => {
 
 	res.json(exercises)
 })
+
+export const getExercise = asyncHandler(async (req, res) => {
+	const exercise = await prisma.exercise.findUnique({
+		where: {
+			id: +req.params.id
+		}
+	})
+
+	res.json(exercise)
+})
+
 //@route PUT api/exercise/:id
 export const updateExercise = asyncHandler(async (req, res) => {
 	try {

@@ -13,6 +13,19 @@ export const getWorkouts = asyncHandler(async (req, res) => {
 	res.json(workouts)
 })
 
+export const getWorkout = asyncHandler(async (req, res) => {
+	const workout = await prisma.workout.findUnique({
+		where: {
+			id: +req.params.id
+		},
+		include: {
+			exercises: true
+		}
+	})
+
+	res.json(workout)
+})
+
 // @route 	POST /api/workouts
 export const createNewWorkout = asyncHandler(async (req, res) => {
 	const { name, exerciseIds } = req.body

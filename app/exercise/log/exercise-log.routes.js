@@ -4,6 +4,7 @@ import {
 	createLogExercise,
 	deleteAllLogExercises,
 	deleteLogExercise,
+	getAllExerciseLogTimes,
 	getAllLogExercise,
 	getLogExercise,
 	updateExerciseLogTime
@@ -13,7 +14,9 @@ const router = express.Router()
 
 router.route('/').get(protect, getAllLogExercise)
 router.route('/:exerciseId').post(protect, createLogExercise)
-router.route('/:id').put(protect, updateExerciseLogTime)
+router.route('/time/:id').put(protect, updateExerciseLogTime)
+router.route('/time/:id').put(protect, updateExerciseLogTime)
+router.route('/time').get(protect, getAllExerciseLogTimes)
 router.route('/:id').get(protect, getLogExercise)
 router.route('/:id').delete(protect, deleteLogExercise)
 router.route('/').delete(protect, deleteAllLogExercises)

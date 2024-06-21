@@ -115,6 +115,12 @@ export const updateExerciseLogTime = asyncHandler(async (req, res) => {
 	}
 })
 
+export const getAllExerciseLogTimes = asyncHandler(async (req, res) => {
+	const exerciseTime = await prisma.exerciseTime.findMany({})
+
+	res.json(exerciseTime)
+})
+
 //  @route DELETE api/exercises/log/:id
 export const deleteLogExercise = asyncHandler(async (req, res) => {
 	await prisma.logExercise.delete({
