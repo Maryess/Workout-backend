@@ -3,7 +3,7 @@ import asyncHandler from 'express-async-handler'
 import { prisma } from '../prisma.js'
 
 // @route   GET /api/workouts
-export const getWorkouts = asyncHandler(async (req, res) => {
+export const getAllWorkouts = asyncHandler(async (req, res) => {
 	const workouts = await prisma.workout.findMany({
 		include: {
 			exercises: true
@@ -13,15 +13,21 @@ export const getWorkouts = asyncHandler(async (req, res) => {
 	res.json(workouts)
 })
 
+// @route   GET /api/workouts/:id
 export const getWorkout = asyncHandler(async (req, res) => {
-	const workout = await prisma.workout.findUnique({
-		where: {
-			id: +req.params.id
-		},
-		include: {
-			exercises: true
-		}
-	})
+	try {
+		const workout = await prisma.workout.findUnique({
+			where: {
+				id: +req.params.id
+			},
+			include: {
+				exercises: true
+			}
+		})
+	} catch {
+		res.status(404)
+		throw new Error('Workout is not found')
+	}
 
 	res.json(workout)
 })
@@ -81,6 +87,7 @@ export const deleteWorkout = asyncHandler(async (req, res) => {
 	}
 })
 
+// @route   DELETE /api/workouts
 export const deleteAllWorkouts = asyncHandler(async (req, res) => {
 	await prisma.workout.deleteMany({})
 

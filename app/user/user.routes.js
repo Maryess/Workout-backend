@@ -9,8 +9,7 @@ import {
 
 const router = express.Router()
 
-router.route('/').get(protect, getAllUsers)
-router.route('/').delete(protect, deleteAllUsers)
+router.route('/').get(protect, getAllUsers).delete(protect, deleteAllUsers)
 router.route('/:id').delete(protect, deleteUser)
 router.route('/profile').get(protect, getUserProfile)
 

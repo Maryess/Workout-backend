@@ -4,20 +4,26 @@ import {
 	createLogExercise,
 	deleteAllLogExercises,
 	deleteLogExercise,
-	getAllExerciseLogTimes,
-	getAllLogExercise,
-	getLogExercise,
 	updateExerciseLogTime
 } from './exercise-log.controller.js'
+import {
+	getAllExerciseLogTimes,
+	getAllLogExercise,
+	getLogExercise
+} from './get-exercise-log.controller.js'
 
 const router = express.Router()
 
-router.route('/').get(protect, getAllLogExercise)
-router.route('/:exerciseId').post(protect, createLogExercise)
-router.route('/time/:id').put(protect, updateExerciseLogTime)
+router
+	.route('/')
+	.get(protect, getAllLogExercise)
+	.delete(protect, deleteAllLogExercises)
+router
+	.route('/:id')
+	.get(protect, getLogExercise)
+	.delete(protect, deleteLogExercise)
 router.route('/time/:id').put(protect, updateExerciseLogTime)
 router.route('/time').get(protect, getAllExerciseLogTimes)
-router.route('/:id').get(protect, getLogExercise)
-router.route('/:id').delete(protect, deleteLogExercise)
-router.route('/').delete(protect, deleteAllLogExercises)
+router.route('/:exerciseId').post(protect, createLogExercise)
+
 export default router

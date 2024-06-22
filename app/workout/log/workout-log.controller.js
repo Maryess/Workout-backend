@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import { prisma } from '../../prisma.js'
 
-//  @route POST api/exercises/log
+//  @route GET api/workouts/log
 export const getAllLogWorkouts = asyncHandler(async (req, res) => {
 	const logWorkout = await prisma.logWorkout.findMany({
 		include: {
@@ -78,16 +78,21 @@ export const createLogWorkout = asyncHandler(async (req, res) => {
 
 //  @route DELETE api/exercises/log/:id
 export const deleteLogWorkout = asyncHandler(async (req, res) => {
-	await prisma.logExercise.delete({
+	const logWorkout = await prisma.logExercise.delete({
 		where: {
 			id: +req.params.id
 		}
 	})
 
+	if (!logWorkout) {
+		res.status(404)
+		throw new Error('Log workout not found!')
+	}
+
 	res.json({ message: 'LogWorkout deleted!' })
 })
 
-//  @route DELETE api/exercises/log/:id
+//  @route DELETE api/exercises/log
 export const deleteAllLogWorkouts = asyncHandler(async (req, res) => {
 	await prisma.logExercise.delete({
 		where: {

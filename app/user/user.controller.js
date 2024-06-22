@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import { prisma } from '../prisma.js'
 import { UserFields } from '../utils/user.util.js'
+
 //  @route GET api/users/profile
 export const getAllUsers = asyncHandler(async (req, res) => {
 	const user = await prisma.user.findMany({})
@@ -8,6 +9,7 @@ export const getAllUsers = asyncHandler(async (req, res) => {
 	res.json(user)
 })
 
+//  @route DELETE api/users/:id
 export const deleteUser = asyncHandler(async (req, res) => {
 	await prisma.user.delete({
 		where: {
@@ -18,12 +20,14 @@ export const deleteUser = asyncHandler(async (req, res) => {
 	res.json({ message: 'User deleted!' })
 })
 
+//  @route DELETE api/users
 export const deleteAllUsers = asyncHandler(async (req, res) => {
 	await prisma.user.deleteMany({})
 
 	res.json({ message: 'Users deleted!' })
 })
 
+//  @route GET api/users/:id
 export const getUserProfile = asyncHandler(async (req, res) => {
 	const user = await prisma.user.findUnique({
 		where: {

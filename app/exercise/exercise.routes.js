@@ -11,10 +11,15 @@ import {
 
 const router = express.Router()
 
-router.route('/').post(protect, createNewExercise)
-router.route('/').get(protect, getAllExercises)
-router.route('/:id').get(protect, getExercise)
-router.route('/:id').put(protect, updateExercise)
-router.route('/:id').delete(protect, deleteExercise)
-router.route('/').delete(protect, deleteAllExercises)
+router
+	.route('/')
+	.post(protect, createNewExercise)
+	.get(protect, getAllExercises)
+	.delete(protect, deleteAllExercises)
+router
+	.route('/:id')
+	.get(protect, getExercise)
+	.put(protect, updateExercise)
+	.delete(protect, deleteExercise)
+
 export default router
