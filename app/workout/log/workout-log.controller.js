@@ -1,18 +1,30 @@
 import asyncHandler from 'express-async-handler'
 import { prisma } from '../../prisma.js'
 
-//  @route GET api/workouts/log
-export const getAllLogWorkouts = asyncHandler(async (req, res) => {
-	const logWorkout = await prisma.logWorkout.findMany({
+//  @route GET api/workouts/log/:id
+export const getLogWorkout = asyncHandler(async (req, res) => {
+	const logWorkout = await prisma.logWorkout.findUnique({
+		where: {
+			id: +req.params.id
+		},
 		include: {
-			logExercises: true
+			logExercises: {
+				include: {
+					times: true
+				}
+			},
+			workout: {
+				include: {
+					exercises: true
+				}
+			}
 		}
 	})
 
 	res.json(logWorkout)
 })
 
-//  @route POST api/exercises/log
+//  @route POST api/workouts/log
 export const createLogWorkout = asyncHandler(async (req, res) => {
 	const workoutId = +req.params.id
 
@@ -74,31 +86,4 @@ export const createLogWorkout = asyncHandler(async (req, res) => {
 	})
 
 	res.json(workoutLog)
-})
-
-//  @route DELETE api/exercises/log/:id
-export const deleteLogWorkout = asyncHandler(async (req, res) => {
-	const logWorkout = await prisma.logExercise.delete({
-		where: {
-			id: +req.params.id
-		}
-	})
-
-	if (!logWorkout) {
-		res.status(404)
-		throw new Error('Log workout not found!')
-	}
-
-	res.json({ message: 'LogWorkout deleted!' })
-})
-
-//  @route DELETE api/exercises/log
-export const deleteAllLogWorkouts = asyncHandler(async (req, res) => {
-	await prisma.logExercise.delete({
-		where: {
-			id: +req.params.id
-		}
-	})
-
-	res.json({ message: 'LogWorkouts deleted!' })
 })

@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler'
+import { prisma } from '../../prisma.js'
 import { addPrevValues } from './prev-exercise-log.js'
-
 //  @route GET api/exercises/log
 export const getAllLogExercise = asyncHandler(async (req, res) => {
 	const logExercise = await prisma.logExercise.findMany({

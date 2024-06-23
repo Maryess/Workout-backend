@@ -6,7 +6,8 @@ import { prisma } from '../prisma.js'
 export const getAllWorkouts = asyncHandler(async (req, res) => {
 	const workouts = await prisma.workout.findMany({
 		include: {
-			exercises: true
+			exercises: true,
+			logWorkout: true
 		}
 	})
 
@@ -24,12 +25,11 @@ export const getWorkout = asyncHandler(async (req, res) => {
 				exercises: true
 			}
 		})
+		res.json(workout)
 	} catch {
 		res.status(404)
 		throw new Error('Workout is not found')
 	}
-
-	res.json(workout)
 })
 
 // @route 	POST /api/workouts
