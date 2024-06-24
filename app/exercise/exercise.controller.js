@@ -54,6 +54,9 @@ export const getExercise = asyncHandler(async (req, res) => {
 	const exercise = await prisma.exercise.findUnique({
 		where: {
 			id: +req.params.id
+		},
+		include: {
+			logExercise: true
 		}
 	})
 

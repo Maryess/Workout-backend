@@ -13,9 +13,10 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedt  DateTime @default(now()) @map("updated_at")
 
-  name        String
-  password    String
-  image       String[]
+  name     String
+  password String
+  image    String[]
+
   logExercise logExercise[]
   logWorkout  logWorkout[]
 }
@@ -41,8 +42,7 @@ model Exercise {
   iconPath String    @map("icon_path")
   workout  Workout[]
 
-  logExercise   logExercise? @relation(fields: [logExerciseId], references: [id])
-  logExerciseId Int?
+  logExercise logExercise[]
 }
 
 model logExercise {
@@ -52,12 +52,13 @@ model logExercise {
   updatedt    DateTime @default(now()) @map("updated_at")
 
   times    ExerciseTime[]
-  exercise Exercise[]
+  exercise Exercise?      @relation(fields: [exerciseId], references: [id])
 
   user         User?       @relation(fields: [userId], references: [id])
   userId       Int?
   logWorkout   logWorkout? @relation(fields: [logWorkoutId], references: [id])
   logWorkoutId Int?
+  exerciseId   Int?
 }
 
 model logWorkout {

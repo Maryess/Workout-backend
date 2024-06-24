@@ -10,7 +10,8 @@ export const getLogWorkout = asyncHandler(async (req, res) => {
 		include: {
 			logExercises: {
 				include: {
-					times: true
+					times: true,
+					exercise: true
 				}
 			},
 			workout: {
