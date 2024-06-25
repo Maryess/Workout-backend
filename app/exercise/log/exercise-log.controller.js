@@ -65,6 +65,28 @@ export const updateExerciseLogTime = asyncHandler(async (req, res) => {
 	}
 })
 
+// @route   PATCH /api/exercises/log/complete/:id
+export const completeExerciseLog = asyncHandler(async (req, res) => {
+	const { isCompleted } = req.body
+
+	try {
+		const exerciseLog = await prisma.logExercise.update({
+			where: {
+				id: +req.params.id
+			},
+			data: {
+				isCompleted
+			},
+			include: { exercise: true, logWorkout: true }
+		})
+
+		res.json(exerciseLog)
+	} catch (error) {
+		res.status(404)
+		throw new Error('Exercise log not found!')
+	}
+})
+
 //  @route DELETE api/exercises/log/:id
 export const deleteLogExercise = asyncHandler(async (req, res) => {
 	await prisma.logExercise.delete({
