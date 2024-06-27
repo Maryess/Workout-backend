@@ -44,11 +44,12 @@ export const registerUser = asyncHandler(async (req, res) => {
 		data: {
 			email,
 			password: await hash(password),
-			name: faker.person.fullName()
+			name: faker.person.fullName(),
+			image: []
 		}
 	})
 
 	const token = generateToken(user.id)
 
-	res.json(user, token)
+	res.json({ user, token })
 })

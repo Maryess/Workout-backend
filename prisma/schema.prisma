@@ -28,7 +28,7 @@ model Workout {
   updatedt  DateTime @default(now()) @map("updated_at")
 
   exercises  Exercise[]
-  logWorkout logWorkout[]
+  logWorkout logWorkout?
 }
 
 model Exercise {
@@ -73,7 +73,7 @@ model logWorkout {
   userId Int?
 
   workout   Workout? @relation(fields: [workoutId], references: [id])
-  workoutId Int?
+  workoutId Int?     @unique
 }
 
 model ExerciseTime {
